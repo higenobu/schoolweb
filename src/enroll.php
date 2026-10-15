@@ -3,7 +3,7 @@ require_once __DIR__.'/db.php';
 
 /* REGISTER */
 function registerEnrollment(int $studentId, int $courseId): bool {
-    $sql = "INSERT INTO enrollment (student_id,course_id)
+    $sql = "INSERT IGNORE INTO enrollment (student_id,course_id)
             VALUES (:sid,:cid)";
     $stmt = query($sql, [':sid'=>$studentId, ':cid'=>$courseId]);
     return $stmt->rowCount() > 0;

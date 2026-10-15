@@ -11,7 +11,7 @@ function addCourse(array $data): int {
 
 /* LIST */
 function getCourses(): array {
-    $sql = "SELECT c.course_id,c.course_code,c.title,c.credits,c.semester,i.first_name||' '||i.last_name AS instructor
+    $sql = "SELECT c.course_id,c.course_code,c.title,c.credits,c.semester,CONCAT(i.first_name,' ',i.last_name) AS instructor
             FROM course c
             LEFT JOIN instructor i ON c.instructor_id=i.instructor_id";
     $stmt = query($sql);
