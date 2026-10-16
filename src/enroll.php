@@ -2,11 +2,20 @@
 require_once __DIR__.'/db.php';
 
 /* REGISTER */
-function registerEnrollment(int $studentId, int $courseId): bool {
-    $sql = "INSERT IGNORE INTO enrollment (student_id,course_id)
-            VALUES (:sid,:cid)";
-    $stmt = query($sql, [':sid'=>$studentId, ':cid'=>$courseId]);
-    return $stmt->rowCount() > 0;
+function registerEnrollment(int $studentId, int $courseId): string {
+    try {
+        $sql = "INSERT INTO enrollment (student_id,course_id)
+                VALUES (:sid,:cid)";
+        $stmt = query($sql, [':sid'=>$studentId, ':cid'=>$courseId]);
+
+        return $stmt->rowCount() > 0 ? 'success' : 'error';
+    } catch (PDOException $e) {
+        // MySQL duplicate key error
+        if ((int)$e->getCode() === 23000) {
+            return 'duplicate';
+        }
+        return 'error';
+    }
 }
 
 /* LIST ENROLLMENTS */
